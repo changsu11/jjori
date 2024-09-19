@@ -1,0 +1,17 @@
+<Context>
+    <Resource name="jdbc/myappdb"
+              auth="Container"
+              type="javax.sql.DataSource"
+              maxTotal="100"
+              maxIdle="30"
+              maxWaitMillis="10000"
+              username="root"
+              password="password"
+              driverClassName="org.mariadb.jdbc.Driver"
+              url="jdbc:mariadb://10.100.0.20:3306/myappdb"
+              removeAbandonedOnBorrow="true"
+              removeAbandonedTimeout="60"
+              logAbandoned="true"
+              />
+</Context>
+
