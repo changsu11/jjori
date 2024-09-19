@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: legohome
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: lezzanggo.shop
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tomcat-index-svc
+            port:
+              number: 8080
+      - path: /login
+        pathType: Prefix
+        backend:
+          service:
+            name: tomcat-login-svc
+            port:
+              number: 8080
+      - path: /signup
+        pathType: Prefix
+        backend:
+          service:
+            name: tomcat-signup-svc
+            port:
+              number: 8080

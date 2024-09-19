@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-login
+  labels:
+    app: tomcat-login
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tomcat-login
+  template:
+    metadata:
+      labels:
+        app: tomcat-login
+    spec:
+      nodeSelector:
+        role: worker2    
+      containers:
+        - name: tomcat
+          image: parkhyeonwoo/tomcat-login:v1.0
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat-login-svc
+spec:
+  selector:
+    app: tomcat-login
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  clusterIP: 10.100.200.102      
+  type: ClusterIP

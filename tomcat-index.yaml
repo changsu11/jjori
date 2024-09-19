@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-index
+  labels:
+    app: tomcat-index
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tomcat-index
+  template:
+    metadata:
+      labels:
+        app: tomcat-index
+    spec:
+      nodeSelector:
+        role: worker1  # 노드 셀렉터 설정
+      containers:
+        - name: tomcat
+          image: parkhyeonwoo/tomcat-index:v1.0
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat-index-svc
+spec:
+  selector:
+    app: tomcat-index
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  clusterIP: 10.100.200.101      
+  type: ClusterIP

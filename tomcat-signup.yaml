@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-signup
+  labels:
+    app: tomcat-signup
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tomcat-signup
+  template:
+    metadata:
+      labels:
+        app: tomcat-signup
+    spec:
+      nodeSelector:
+        role: worker3    
+      containers:
+        - name: tomcat
+          image: parkhyeonwoo/tomcat-signup:v1.0
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat-signup-svc
+spec:
+  selector:
+    app: tomcat-signup
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  clusterIP: 10.100.200.103      
+  type: ClusterIP
